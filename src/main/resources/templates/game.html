@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>КОСМИЧЕСКИЙ КВЕСТ: ПРОЕКТ «ОМ»</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #a8d8ff; font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 20% 30%, rgba(138, 43, 226, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(255, 107, 53, 0.12) 0%, transparent 50%), radial-gradient(ellipse at 60% 20%, rgba(68, 138, 255, 0.1) 0%, transparent 40%), radial-gradient(ellipse at 30% 80%, rgba(105, 240, 174, 0.08) 0%, transparent 40%), radial-gradient(ellipse at 90% 10%, rgba(255, 64, 129, 0.1) 0%, transparent 35%); z-index: 0; animation: nebulaShift 60s ease-in-out infinite; }
+        @keyframes nebulaShift { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+        body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 5% 10%, #fff, transparent), radial-gradient(1px 1px at 8% 25%, #fff, transparent), radial-gradient(1.5px 1.5px at 12% 45%, #fff, transparent), radial-gradient(1px 1px at 15% 65%, #fff, transparent), radial-gradient(1px 1px at 18% 85%, #fff, transparent), radial-gradient(1.5px 1.5px at 22% 15%, #fff, transparent), radial-gradient(1px 1px at 25% 35%, #fff, transparent), radial-gradient(1px 1px at 28% 55%, #fff, transparent), radial-gradient(1.5px 1.5px at 32% 75%, #fff, transparent), radial-gradient(1px 1px at 35% 95%, #fff, transparent), radial-gradient(1px 1px at 38% 20%, #fff, transparent), radial-gradient(1.5px 1.5px at 42% 40%, #fff, transparent), radial-gradient(1px 1px at 45% 60%, #fff, transparent), radial-gradient(1px 1px at 48% 80%, #fff, transparent), radial-gradient(1.5px 1.5px at 52% 5%, #fff, transparent), radial-gradient(1px 1px at 55% 30%, #fff, transparent), radial-gradient(1px 1px at 58% 50%, #fff, transparent), radial-gradient(1.5px 1.5px at 62% 70%, #fff, transparent), radial-gradient(1px 1px at 65% 90%, #fff, transparent), radial-gradient(1px 1px at 68% 12%, #fff, transparent), radial-gradient(1.5px 1.5px at 72% 38%, #fff, transparent), radial-gradient(1px 1px at 75% 58%, #fff, transparent), radial-gradient(1px 1px at 78% 78%, #fff, transparent), radial-gradient(1.5px 1.5px at 82% 98%, #fff, transparent), radial-gradient(1px 1px at 85% 22%, #fff, transparent), radial-gradient(1px 1px at 88% 42%, #fff, transparent), radial-gradient(1.5px 1.5px at 92% 62%, #fff, transparent), radial-gradient(1px 1px at 95% 82%, #fff, transparent), radial-gradient(1px 1px at 98% 8%, #fff, transparent), radial-gradient(1.5px 1.5px at 3% 52%, #fff, transparent), radial-gradient(1px 1px at 7% 72%, #fff, transparent), radial-gradient(1px 1px at 10% 92%, #fff, transparent), radial-gradient(1.5px 1.5px at 40% 18%, #fff, transparent), radial-gradient(1px 1px at 50% 48%, #fff, transparent), radial-gradient(1px 1px at 60% 88%, #fff, transparent), radial-gradient(1.5px 1.5px at 70% 28%, #fff, transparent), radial-gradient(1px 1px at 80% 68%, #fff, transparent), radial-gradient(1px 1px at 90% 38%, #fff, transparent), radial-gradient(1.5px 1.5px at 13% 33%, #fff, transparent), radial-gradient(1px 1px at 27% 67%, #fff, transparent); background-size: 100% 100%; z-index: 0; animation: twinkle 4s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+        .stars-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .stars-layer-1 { background-image: radial-gradient(2px 2px at 10% 20%, #fff, transparent), radial-gradient(2.5px 2.5px at 30% 60%, #a8d8ff, transparent), radial-gradient(2px 2px at 50% 10%, #fff, transparent), radial-gradient(3px 3px at 70% 40%, #ff6b35, transparent), radial-gradient(2px 2px at 90% 80%, #fff, transparent), radial-gradient(2.5px 2.5px at 20% 90%, #69F0AE, transparent), radial-gradient(2px 2px at 40% 30%, #fff, transparent), radial-gradient(3px 3px at 60% 70%, #448AFF, transparent), radial-gradient(2px 2px at 80% 15%, #fff, transparent), radial-gradient(2.5px 2.5px at 15% 50%, #FFD740, transparent), radial-gradient(2px 2px at 85% 55%, #fff, transparent), radial-gradient(3px 3px at 45% 85%, #E040FB, transparent); background-size: 100% 100%; animation: brightTwinkle 3s ease-in-out infinite; }
+        .stars-layer-2 { background-image: radial-gradient(2px 2px at 25% 45%, #fff, transparent), radial-gradient(2.5px 2.5px at 55% 25%, #ff6b35, transparent), radial-gradient(2px 2px at 75% 65%, #fff, transparent), radial-gradient(3px 3px at 35% 75%, #69F0AE, transparent), radial-gradient(2px 2px at 95% 35%, #fff, transparent), radial-gradient(2.5px 2.5px at 5% 65%, #448AFF, transparent), radial-gradient(2px 2px at 65% 95%, #fff, transparent), radial-gradient(3px 3px at 85% 5%, #FFD740, transparent); background-size: 100% 100%; animation: brightTwinkle 5s ease-in-out infinite reverse; }
+        @keyframes brightTwinkle { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+        .shooting-star { position: fixed; width: 100px; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,0)); z-index: 0; pointer-events: none; opacity: 0; }
+        .shooting-star-1 { top: 15%; left: -100px; transform: rotate(-15deg); animation: shooting 8s linear infinite; animation-delay: 2s; }
+        .shooting-star-2 { top: 45%; left: -100px; transform: rotate(-20deg); animation: shooting 12s linear infinite; animation-delay: 6s; }
+        .shooting-star-3 { top: 75%; left: -100px; transform: rotate(-10deg); animation: shooting 10s linear infinite; animation-delay: 4s; }
+        @keyframes shooting { 0% { left: -100px; opacity: 0; } 5% { opacity: 1; } 15% { left: 110%; opacity: 0; } 100% { left: 110%; opacity: 0; } }
+        .galaxy { position: fixed; border-radius: 50%; filter: blur(40px); z-index: 0; pointer-events: none; animation: galaxyPulse 15s ease-in-out infinite; }
+        .galaxy-1 { top: 10%; left: 15%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(138, 43, 226, 0.3), transparent); }
+        .galaxy-2 { bottom: 20%; right: 10%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(68, 138, 255, 0.25), transparent); animation-delay: 5s; }
+        .galaxy-3 { top: 60%; left: 70%; width: 180px; height: 180px; background: radial-gradient(circle, rgba(255, 107, 53, 0.2), transparent); animation-delay: 10s; }
+        @keyframes galaxyPulse { 0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); } 50% { opacity: 0.7; transform: scale(1.2) rotate(180deg); } }
+        .header { text-align: center; color: #ff6b35; text-transform: uppercase; letter-spacing: 4px; font-size: 22px; padding: 12px; border-bottom: 2px solid #ff6b35; text-shadow: 0 0 15px rgba(255, 107, 53, 0.8), 0 0 30px rgba(255, 107, 53, 0.4); background: rgba(10, 14, 39, 0.85); backdrop-filter: blur(10px); position: relative; z-index: 2; flex-shrink: 0; }
+        .main-container { display: grid; grid-template-columns: 320px 1fr 280px; gap: 12px; padding: 12px; flex: 1; min-height: 0; position: relative; z-index: 1; }
+        .left-panel { background: linear-gradient(135deg, rgba(26, 35, 50, 0.92), rgba(10, 14, 39, 0.92)); backdrop-filter: blur(10px); padding: 10px; border-radius: 10px; border: 2px solid #2d3a52; display: flex; flex-direction: column; min-height: 0; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
+        .left-panel h3 { color: #ff6b35; font-size: 15px; margin-bottom: 8px; margin-top: 6px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid #2d3a52; padding-bottom: 5px; text-shadow: 0 0 10px rgba(255, 107, 53, 0.6); font-weight: bold; }
+        .status-box { background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(10, 14, 39, 0.6)); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 6px solid #69F0AE; font-size: 18px; line-height: 1.8; box-shadow: 0 0 15px rgba(105, 240, 174, 0.2), inset 0 0 20px rgba(105, 240, 174, 0.05); }
+        .status-box p { margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
+        .status-box .status-value { font-size: 24px; font-weight: bold; text-shadow: 0 0 10px currentColor; }
+        .deck-info { background: rgba(0, 0, 0, 0.5); padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 14px; color: #69F0AE; border: 1px solid rgba(105, 240, 174, 0.4); box-shadow: 0 0 10px rgba(105, 240, 174, 0.15); font-weight: 500; }
+        .crew-container { flex: 1; overflow-y: auto; min-height: 0; margin-bottom: 6px; }
+        .crew-container::-webkit-scrollbar { width: 4px; }
+        .crew-container::-webkit-scrollbar-thumb { background: #ff6b35; border-radius: 3px; }
+        .crew-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+        .player-card { background: linear-gradient(135deg, #2d3a52, #1a2332); padding: 4px 5px; border-left: 3px solid; border-radius: 4px; font-size: 9px; min-height: 42px; max-height: 42px; overflow: hidden; transition: all 0.2s; }
+        .player-card:hover { transform: translateX(2px); }
+        .active-turn { background: linear-gradient(135deg, #1e3a2f, #0a2a1f); box-shadow: 0 0 10px rgba(0, 255, 0, 0.4); border-left-width: 4px; }
+        .player-name { display: flex; align-items: center; gap: 3px; font-weight: bold; font-size: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-info { color: #a8d8ff; font-size: 8px; margin-top: 1px; }
+        .active-actions { background: linear-gradient(135deg, rgba(30, 58, 47, 0.95), rgba(10, 42, 31, 0.95)); border: 2px solid #00ff00; border-radius: 8px; padding: 8px; margin-bottom: 6px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); max-height: 280px; overflow-y: auto; }
+        .active-actions::-webkit-scrollbar { width: 4px; }
+        .active-actions::-webkit-scrollbar-thumb { background: #00ff00; border-radius: 3px; }
+        .active-actions-header { color: #00ff00; font-size: 11px; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 8px rgba(0, 255, 0, 0.6); }
+        .active-player-info { background: rgba(0, 0, 0, 0.4); padding: 5px; border-radius: 4px; margin-bottom: 6px; font-size: 10px; display: flex; align-items: center; gap: 6px; }
+        .tools-list { background: rgba(0, 0, 0, 0.3); padding: 3px; border-radius: 3px; margin-top: 3px; }
+        .tool-item { background: rgba(26, 35, 50, 0.8); padding: 3px 5px; margin: 2px 0; border-radius: 3px; font-size: 9px; display: flex; justify-content: space-between; align-items: center; position: relative; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .tool-item:hover { border-color: #ff6b35; background: rgba(255, 107, 53, 0.15); }
+        .tool-name { display: flex; align-items: center; gap: 3px; flex: 1; }
+        .tool-info-icon { display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px; background: #448AFF; color: white; border-radius: 50%; font-size: 8px; font-weight: bold; flex-shrink: 0; }
+        .tool-description-box { background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(255, 107, 53, 0.05)); border: 2px solid #ff6b35; border-radius: 8px; padding: 12px; margin-top: 8px; font-size: 13px; color: #fff; line-height: 1.5; min-height: 60px; box-shadow: 0 0 15px rgba(255, 107, 53, 0.3); transition: all 0.3s; }
+        .tool-description-box.empty { color: #888; font-style: italic; background: rgba(0, 0, 0, 0.3); border-color: #2d3a52; box-shadow: none; }
+        .tool-description-box .tool-desc-title { color: #ff6b35; font-weight: bold; font-size: 14px; margin-bottom: 5px; text-shadow: 0 0 8px rgba(255, 107, 53, 0.6); }
+        .btn { background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: white; border: none; padding: 5px; width: 100%; margin-top: 3px; cursor: pointer; font-weight: bold; font-size: 10px; border-radius: 3px; transition: all 0.2s; text-transform: uppercase; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(255, 107, 53, 0.4); }
+        .btn-danger { background: linear-gradient(135deg, #ff1a1a, #cc0000); }
+        .btn-ability { background: linear-gradient(135deg, #448AFF, #2979FF); font-size: 9px; padding: 4px; }
+        .btn-tool { background: linear-gradient(135deg, #69F0AE, #00E676); color: #000; font-size: 9px; padding: 3px 6px; }
+        .btn-sm { width: 26px; padding: 3px; display: inline-block; margin: 1px; font-size: 12px; }
+        .section-title { color: #ff6b35; font-size: 9px; margin-top: 4px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .center-column { display: flex; flex-direction: column; min-height: 0; gap: 10px; }
+        .board-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+        .board { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(12, 1fr); gap: 2px; background: linear-gradient(135deg, #1a2332, #0a0e27); padding: 10px; border: 3px solid #ff6b35; border-radius: 10px; box-shadow: 0 0 30px rgba(255, 107, 53, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.5); width: min(100%, calc(100vh - 280px)); aspect-ratio: 1; max-height: 100%; }
+        .cell { display: flex; align-items: center; justify-content: center; font-size: 14px; position: relative; flex-wrap: wrap; align-content: center; justify-content: center; border-radius: 3px; aspect-ratio: 1; }
+        .corridor { background: linear-gradient(135deg, #1a2332, #2d3a52); border: 1px solid #2d3a52; }
+        .core { background: radial-gradient(circle, #ff0000, #8b0000); box-shadow: 0 0 10px #ff0000; animation: coreGlow 2s ease-in-out infinite; }
+        @keyframes coreGlow { 0%, 100% { box-shadow: 0 0 10px #ff0000; } 50% { box-shadow: 0 0 20px #ff0000; } }
+        .node { background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: black; font-weight: bold; animation: nodePulse 1.5s ease-in-out infinite; }
+        @keyframes nodePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .kz { background: linear-gradient(135deg, #ff1a1a, #cc0000) !important; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); animation: kzFlicker 0.5s ease-in-out infinite; }
+        @keyframes kzFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .player-token { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ffffff; margin: 1px; box-shadow: 0 0 6px currentColor; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #000; }
+        .log-container { flex-shrink: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); padding: 10px; border: 2px solid #2d3a52; border-radius: 8px; height: 110px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 12px; color: #00ff00; line-height: 1.4; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); }
+        .log-container::-webkit-scrollbar { width: 6px; }
+        .log-container::-webkit-scrollbar-thumb { background: #00ff00; border-radius: 3px; }
+        .log-header { color: #ff6b35; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 0 8px rgba(255, 107, 53, 0.5); }
+        .right-panel { background: linear-gradient(135deg, rgba(26, 35, 50, 0.92), rgba(10, 14, 39, 0.92)); backdrop-filter: blur(10px); padding: 12px; border-radius: 10px; border: 2px solid #448AFF; display: flex; flex-direction: column; min-height: 0; overflow: hidden; box-shadow: 0 0 20px rgba(68, 138, 255, 0.2); }
+        .right-panel h3 { color: #448AFF; font-size: 13px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2d3a52; padding-bottom: 4px; text-shadow: 0 0 8px rgba(68, 138, 255, 0.5); }
+        .history-list { flex: 1; overflow-y: auto; min-height: 0; font-size: 11px; }
+        .history-list::-webkit-scrollbar { width: 5px; }
+        .history-list::-webkit-scrollbar-thumb { background: #448AFF; border-radius: 3px; }
+        .history-item { padding: 6px 8px; margin-bottom: 4px; background: rgba(0, 0, 0, 0.4); border-radius: 4px; border-left: 2px solid #69F0AE; line-height: 1.3; }
+        .empty-history { color: #666; text-align: center; padding: 20px; font-style: italic; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); justify-content: center; align-items: center; z-index: 100; }
+        .modal.active { display: flex; }
+        .modal-content { background: linear-gradient(135deg, #1a2332, #0a0e27); padding: 25px; border: 3px solid #ff6b35; text-align: center; width: 550px; max-width: 90%; border-radius: 15px; box-shadow: 0 0 50px rgba(255, 107, 53, 0.5); max-height: 90vh; overflow-y: auto; }
+        .answer-btn { font-size: 14px; padding: 10px; margin: 5px 0; width: 100%; background: linear-gradient(135deg, #2d3a52, #1a2332); border: 2px solid #a8d8ff; color: white; cursor: pointer; transition: all 0.3s; border-radius: 6px; }
+        .answer-btn:hover { background: linear-gradient(135deg, #ff6b35, #ff8c5a); border-color: #ff6b35; transform: scale(1.02); }
+        .explanation { background: rgba(0, 0, 0, 0.5); padding: 12px; margin: 12px 0; border-left: 4px solid #ff6b35; text-align: left; border-radius: 4px; color: #a8d8ff; line-height: 1.5; font-size: 13px; }
+        .puzzle-card { background: rgba(0, 0, 0, 0.5); border: 2px solid #a8d8ff; padding: 12px; margin: 8px 0; border-radius: 8px; cursor: pointer; transition: all 0.3s; text-align: left; }
+        .puzzle-card:hover { border-color: #ff6b35; transform: scale(1.02); }
+        .tool-hint-box { background: rgba(0, 0, 0, 0.5); border: 3px solid #69F0AE; padding: 15px; margin: 12px 0; border-radius: 10px; }
+        .voting-modal .modal-content { border-color: #448AFF; box-shadow: 0 0 50px rgba(68, 138, 255, 0.5); }
+        .voting-title { color: #448AFF; font-size: 22px; margin-bottom: 15px; }
+        .voting-description { background: rgba(0, 0, 0, 0.5); padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #448AFF; text-align: left; color: white; font-size: 14px; line-height: 1.5; }
+        .vote-option { background: linear-gradient(135deg, #2d3a52, #1a2332); border: 2px solid #448AFF; color: white; padding: 12px; margin: 8px 0; border-radius: 6px; text-align: left; }
+        .voting-status { background: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 6px; margin: 15px 0; text-align: center; color: #69F0AE; font-size: 14px; }
+        .btn-finalize { background: linear-gradient(135deg, #ff6b35, #ff8c5a); font-size: 16px; padding: 15px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="stars-layer stars-layer-1"></div>
+<div class="stars-layer stars-layer-2"></div>
+<div class="shooting-star shooting-star-1"></div>
+<div class="shooting-star shooting-star-2"></div>
+<div class="shooting-star shooting-star-3"></div>
+<div class="galaxy galaxy-1"></div>
+<div class="galaxy galaxy-2"></div>
+<div class="galaxy galaxy-3"></div>
+
+<div class="header">🚀 ПРОЕКТ «ОМ» | КОСМИЧЕСКИЙ КВЕСТ</div>
+
+<div class="main-container">
+    <div class="left-panel">
+        <h3>📊 Статус миссии</h3>
+        <div class="status-box">
+            <p><span>🔧 Узлы:</span><span class="status-value" th:text="${game.fixedNodes} + '/9'" style="color: #69F0AE;">0/9</span></p>
+            <p><span>⚠️ КЗ:</span><span class="status-value" th:text="${game.kzCount}" style="color:#ff1a1a">0</span></p>
+            <p><span>🎯 Ход:</span><span class="status-value" th:text="${game.totalTurns}" style="color: #FFD740">0</span></p>
+        </div>
+        <div class="deck-info">
+            📚 <strong th:text="${game.puzzleDeck.size()}" style="color:#fff; font-size:16px;">30</strong> головоломок | 
+            🛠️ <strong th:text="${game.toolDeck.size()}" style="color:#fff; font-size:16px;">12</strong> предметов
+        </div>
+        
+        <div class="active-actions" th:if="${game.players != null && !game.players.isEmpty()}">
+            <div class="active-actions-header">🎯 Текущий ход</div>
+            <div class="active-player-info" th:with="p=${game.players[game.currentPlayerIndex]}, idx=${game.currentPlayerIndex}">
+                <div class="player-token" th:style="'background-color: ' + ${p.color} + '; width:14px; height:14px; font-size:8px;'" th:text="${idx + 1}"></div>
+                <div>
+                    <strong th:text="${p.name}" style="font-size: 11px;"></strong>
+                    <span style="color: #ff6b35; font-size: 9px;">(<span th:text="${p.role}"></span>)</span><br>
+                    <span style="font-size: 9px;">[<span th:text="${p.x}"></span>,<span th:text="${p.y}"></span>] 🔥<span th:text="${p.burns}" style="color: #ff1a1a;"></span></span>
+                </div>
+            </div>
+            
+            <div class="section-title">🚶 Движение</div>
+            <div>
+                <form action="/move" method="post" style="display:inline;"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><input type="hidden" name="dx" value="0"><input type="hidden" name="dy" value="-1"><button type="submit" class="btn btn-sm">⬆️</button></form>
+                <form action="/move" method="post" style="display:inline;"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><input type="hidden" name="dx" value="-1"><input type="hidden" name="dy" value="0"><button type="submit" class="btn btn-sm">⬅️</button></form>
+                <form action="/move" method="post" style="display:inline;"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><input type="hidden" name="dx" value="1"><input type="hidden" name="dy" value="0"><button type="submit" class="btn btn-sm">➡️</button></form>
+                <form action="/move" method="post" style="display:inline;"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><input type="hidden" name="dx" value="0"><input type="hidden" name="dy" value="1"><button type="submit" class="btn btn-sm">⬇️</button></form>
+            </div>
+            
+            <div class="section-title">⚡ Действия</div>
+            <form action="/puzzle/start" method="post"><button type="submit" class="btn">🔧 Починить узел</button></form>
+            <form action="/tool/draw" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn" style="background: linear-gradient(135deg, #69F0AE, #00E676); color: #000;">📦 Взять предмет</button></form>
+            
+            <div th:with="p=${game.players[game.currentPlayerIndex]}">
+                <div th:if="${p.role == 'Главный Инженер' && !p.abilityUsed}"><form action="/ability/reroll" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn btn-ability">🎲 Переброс</button></form></div>
+                <div th:if="${p.role == 'Программист' && !p.abilityUsed}"><form action="/ability/autoSolve" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn btn-ability">💻 Авто-бинарная</button></form></div>
+                <div th:if="${p.role == 'Электрик' && !p.abilityUsed}"><form action="/ability/removeKZ" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn btn-ability">⚡ Убрать КЗ</button></form></div>
+                <div th:if="${p.role == 'Механик' && !p.abilityUsed}"><form action="/ability/swap" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><input type="hidden" name="targetId" id="swapTarget"><button type="button" class="btn btn-ability" onclick="showSwapModal()">🔄 Поменяться</button></form></div>
+                <div th:if="${p.role == 'Аналитик' && !p.abilityUsed}"><form action="/ability/drawTwo" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn btn-ability">🧠 Выбрать из 2</button></form></div>
+                
+                <div th:if="${p.tools != null && !p.tools.isEmpty()}" class="section-title">🛠️ Предметы (<span th:text="${p.tools.size()}"></span>/3)</div>
+                <div th:if="${p.tools != null && !p.tools.isEmpty()}" class="tools-list">
+                    <div th:each="tool : ${p.tools}" class="tool-item" th:attr="data-tool=${tool}">
+                        <div class="tool-name">
+                            <span class="tool-info-icon">i</span>
+                            <span th:text="${tool}">Предмет</span>
+                        </div>
+                        <form action="/tool/use" method="post" style="display:inline; margin:0;">
+                            <input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}">
+                            <input type="hidden" name="toolName" th:value="${tool}">
+                            <button type="submit" class="btn btn-tool">⚡</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="toolDescription" class="tool-description-box empty">Наведите на предмет, чтобы увидеть его описание</div>
+            </div>
+        </div>
+        
+        <h3>👥 Экипаж</h3>
+        <div class="crew-container">
+            <div class="crew-grid">
+                <div th:each="p, iterStat : ${game.players}" th:class="${'player-card' + (iterStat.index == game.currentPlayerIndex ? ' active-turn' : '')}" th:style="'border-left-color: ' + ${p.color} + ';'">
+                    <div class="player-name">
+                        <div class="player-token" th:style="'background-color: ' + ${p.color} + '; width:10px; height:10px; font-size:7px; border-width:1px;'" th:text="${iterStat.index + 1}"></div>
+                        <span th:text="${p.name}"></span>
+                    </div>
+                    <div class="player-info">
+                        <span th:text="${p.role}" style="color: #ff6b35;"></span><br>
+                        [<span th:text="${p.x}"></span>,<span th:text="${p.y}"></span>] 🔥<span th:text="${p.burns}" style="color: #ff1a1a;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <form action="/debug/forceVote" method="post" style="margin-top:4px;"><button type="submit" class="btn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); font-size: 10px;">🐞 ТЕСТ: Вызвать событие</button></form>
+        <form action="/threat" method="post"><button type="submit" class="btn btn-danger">⚠️ ЗАВЕРШИТЬ ХОД</button></form>
+        <form action="/reset" method="post"><button type="submit" class="btn" style="background: linear-gradient(135deg, #555, #333);">🔄 Новая игра</button></form>
+    </div>
+    
+    <div class="center-column">
+        <div class="board-wrapper">
+            <div class="board">
+                <div th:each="row : ${game.board}">
+                    <div th:each="cell : ${row}" th:class="${'cell ' + (cell.hasKZ ? 'kz' : (cell.type.name().toLowerCase()))}">
+                        <span th:if="${cell.type.name() == 'CORE' && cell.playerColors.isEmpty()}" style="position:absolute; font-size:16px;">☢️</span>
+                        <span th:if="${cell.type.name() == 'NODE' && cell.playerColors.isEmpty()}" style="position:absolute; font-size:16px;">⚡</span>
+                        <div th:each="color, iterStat : ${cell.playerColors}" class="player-token" th:style="'background-color: ' + ${color} + '; color: ' + ${color} + ';'" th:text="${iterStat.index + 1}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="log-header">📜 Журнал событий</div>
+            <div class="log-container" th:text="${game.gameLog}"></div>
+        </div>
+    </div>
+    
+    <div class="right-panel">
+        <h3>📜 История решений</h3>
+        <div class="history-list">
+            <div th:if="${game.votingHistory == null || game.votingHistory.isEmpty()}" class="empty-history">Пока нет принятых решений...<br><br>Голосования появляются каждые 3 хода.</div>
+            <div th:if="${game.votingHistory != null && !game.votingHistory.isEmpty()}" th:each="item : ${game.votingHistory}" class="history-item" th:text="${item}">Решение</div>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛЬНЫЕ ОКНА -->
+<div th:if="${game.isVotingActive && game.currentVoting != null}" class="modal voting-modal active">
+    <div class="modal-content">
+        <h2 class="voting-title">🗳️ <span th:text="${game.currentVoting.title}">Ситуация</span></h2>
+        <div class="voting-description" th:text="${game.currentVoting.description}">Описание</div>
+        <div class="voting-status">Проголосовало: <strong th:text="${game.votes.size()}">0</strong> / 10</div>
+        <div th:each="option, iterStat : ${game.currentVoting.options}" style="margin: 8px 0;">
+            <div class="vote-option">
+                <div style="flex: 1;">
+                    <strong th:text="${option}">Вариант</strong>
+                    <div th:if="${game.currentVoting.consequences != null && game.currentVoting.consequences.size() > iterStat.index}" style="font-size: 11px; color: #a8d8ff; margin-top: 4px;" th:text="${game.currentVoting.consequences[iterStat.index]}">Последствия</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap;">
+                <form th:each="p, pStat : ${game.players}" action="/vote" method="post" style="display:inline; margin:0;" th:if="${!game.votes.containsKey(pStat.index)}">
+                    <input type="hidden" name="playerId" th:value="${pStat.index}">
+                    <input type="hidden" name="option" th:value="${iterStat.index}">
+                    <!-- ИСПРАВЛЕННАЯ СТРОКА: используем |...| и 'or' вместо '||' -->
+                    <button type="submit" class="btn" style="padding: 3px 6px; font-size: 9px; width: auto; margin: 1px;" 
+                            th:style="|background: ${p.color}; color: ${p.color == '#FFFFFF' or p.color == '#FFD740' or p.color == '#B9F6CA' or p.color == '#69F0AE' or p.color == '#18FFFF' ? '#000' : '#fff'}|">
+                        <span th:text="${pStat.index + 1}">1</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <form action="/vote/finalize" method="post" th:if="${game.votes.size() >= 5}">
+            <button type="submit" class="btn btn-finalize">🗳️ ЗАВЕРШИТЬ ГОЛОСОВАНИЕ</button>
+        </form>
+        <div th:if="${game.votes.size() < 5}" style="color: #666; font-size: 11px; margin-top: 10px;">Нужно минимум 5 голосов</div>
+    </div>
+</div>
+
+<div th:if="${game.isPuzzleActive && game.currentPuzzle != null}" class="modal active">
+    <div class="modal-content">
+        <h2 style="color:#ff6b35; font-size: 22px;">⚡ ГОЛОВОЛОМКА</h2>
+        <p th:text="${game.currentPuzzle.question}" style="font-size:15px; margin:15px 0; color: white;"></p>
+        <p style="color:#ff1a1a; font-size: 12px;">⏱️ <span th:text="${game.currentPuzzle.timeSeconds}"></span> сек</p>
+        <div style="margin-top: 12px;">
+            <form th:each="option : ${game.currentPuzzle.answerOptions}" action="/puzzle/submit" method="post">
+                <input type="hidden" name="answer" th:value="${option}">
+                <button type="submit" class="answer-btn"><span th:text="${option}">Вариант</span></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:if="${game.showResult && game.currentPuzzle != null}" class="modal active">
+    <div class="modal-content">
+        <h2 th:style="${game.lastAnswerCorrect ? 'color:#00ff00; font-size: 26px;' : 'color:#ff1a1a; font-size: 26px;'}">
+            <span th:text="${game.lastAnswerCorrect ? '✅ ПРАВИЛЬНО!' : '❌ НЕВЕРНО!'}"></span>
+        </h2>
+        <div style="margin: 12px 0; text-align: left; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 6px;">
+            <p style="margin: 3px 0;"><strong style="color:#a8d8ff">Ваш ответ:</strong> <span th:text="${game.lastAnswer}" style="color: white;"></span></p>
+            <p style="margin: 3px 0;"><strong style="color:#a8d8ff">Правильный:</strong> <span th:text="${game.currentPuzzle.correctAnswer}" style="color: #00ff00; font-weight: bold;"></span></p>
+        </div>
+        <div class="explanation">
+            <strong style="color:#ff6b35">💡 Пояснение:</strong><br>
+            <span th:text="${game.lastExplanation}" style="color: white;"></span>
+        </div>
+        <form action="/result/close" method="post"><button type="submit" class="btn" style="font-size: 14px; padding: 10px; margin-top: 10px;">Продолжить →</button></form>
+    </div>
+</div>
+
+<div th:if="${game.analystChoosing && game.analystFirstCard != null && game.analystSecondCard != null}" class="modal active">
+    <div class="modal-content">
+        <h2 style="color:#ff6b35;">🧠 ВЫБОР АНАЛИТИКА</h2>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <div style="flex: 1;"><form action="/analyst/select" method="post"><input type="hidden" name="cardNumber" value="1"><div class="puzzle-card"><h3 style="color:#ff6b35; font-size: 13px;">#1</h3><p th:text="${game.analystFirstCard.question}" style="font-size: 11px;">Вопрос</p></div><button type="submit" class="btn">Выбрать #1</button></form></div>
+            <div style="flex: 1;"><form action="/analyst/select" method="post"><input type="hidden" name="cardNumber" value="2"><div class="puzzle-card"><h3 style="color:#ff6b35; font-size: 13px;">#2</h3><p th:text="${game.analystSecondCard.question}" style="font-size: 11px;">Вопрос</p></div><button type="submit" class="btn">Выбрать #2</button></form></div>
+        </div>
+    </div>
+</div>
+
+<div th:if="${game.showToolHint}" class="modal active">
+    <div class="modal-content">
+        <h2 style="color:#69F0AE;">🛠️ ПОДСКАЗКА</h2>
+        <div class="tool-hint-box"><p th:text="${game.toolHint}" style="color: white; font-size: 16px;">Подсказка</p></div>
+        <form action="/tool/hint/close" method="post"><button type="submit" class="btn">Понятно →</button></form>
+    </div>
+</div>
+
+<div th:if="${game.showEnding}" class="modal active" style="z-index: 200;">
+    <div class="modal-content" style="width: 700px; border: 4px solid;" th:style="${game.endingType == 'GOOD'} ? 'border-color: #69F0AE; box-shadow: 0 0 80px rgba(105, 240, 174, 0.8);' : (${game.endingType == 'BAD'} ? 'border-color: #ff1a1a; box-shadow: 0 0 80px rgba(255, 26, 26, 0.8);' : 'border-color: #FFD740; box-shadow: 0 0 80px rgba(255, 215, 64, 0.8);')">
+        <h1 th:text="${game.endingTitle}" style="font-size: 32px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 3px;" th:style="${game.endingType == 'GOOD'} ? 'color: #69F0AE; text-shadow: 0 0 20px rgba(105, 240, 174, 0.8);' : (${game.endingType == 'BAD'} ? 'color: #ff1a1a; text-shadow: 0 0 20px rgba(255, 26, 26, 0.8);' : 'color: #FFD740; text-shadow: 0 0 20px rgba(255, 215, 64, 0.8);')"></h1>
+        <div style="background: rgba(0,0,0,0.6); padding: 25px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ff6b35;">
+            <p th:text="${game.endingText}" style="color: white; font-size: 16px; line-height: 1.8; text-align: left;"></p>
+        </div>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; flex: 1;">
+                <div style="color: #a8d8ff; font-size: 12px;">🔧 Починено узлов</div>
+                <div style="color: #69F0AE; font-size: 24px; font-weight: bold;" th:text="${game.fixedNodes} + '/9'">0/9</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; flex: 1;">
+                <div style="color: #a8d8ff; font-size: 12px;">⚠️ Маркеров КЗ</div>
+                <div style="color: #ff1a1a; font-size: 24px; font-weight: bold;" th:text="${game.kzCount}">0</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; flex: 1;">
+                <div style="color: #a8d8ff; font-size: 12px;">🎯 Всего ходов</div>
+                <div style="color: #FFD740; font-size: 24px; font-weight: bold;" th:text="${game.totalTurns}">0</div>
+            </div>
+        </div>
+        <form action="/ending/close" method="post" style="margin-top: 20px;">
+            <button type="submit" class="btn" style="font-size: 16px; padding: 15px; background: linear-gradient(135deg, #ff6b35, #ff8c5a);">🔄 НАЧАТЬ НОВУЮ ИГРУ</button>
+        </form>
+    </div>
+</div>
+
+<div id="swapModal" class="modal">
+    <div class="modal-content">
+        <h2 style="color:#ff6b35;">🔄 С кем поменяться?</h2>
+        <div id="playerList" style="margin: 15px 0;"></div>
+        <button onclick="closeSwapModal()" class="btn" style="background: linear-gradient(135deg, #555, #333);">Отмена</button>
+    </div>
+</div>
+
+<script>
+const toolDescriptions = {
+    "Мультиметр": "🔍 Показывает правильный ответ в модальном окне головоломки",
+    "Осциллограф": "📊 Показывает первые 3 символа правильного ответа",
+    "Тестер цепей": "✅ Показывает полный правильный ответ на головоломку",
+    "Оловоотсос": "🧹 Убирает случайный маркер КЗ с игрового поля",
+    "Флюс": "⏭️ Пропускает следующий ход БЕЗ проверки на появление КЗ",
+    "Паяльная станция": "🔧 Автоматически решает текущую головоломку (если стоишь на ⚡)",
+    "Термоусадка": "🛡️ Даёт защиту от одного столкновения с КЗ (активируется автоматически)",
+    "Антистатический браслет": "⚡ Перемещает случайный маркер КЗ на другую клетку",
+    "Экстренный ремонт": "🔧 Чинит узел без решения головоломки (если стоишь на ⚡)",
+    "Резервное питание": "🔋 Даёт +1 клетку к следующему движению",
+    "Wi-Fi модуль": "📶 Можно спросить совета у другого игрока",
+    "Аварийный генератор": "⚡ Полностью пропускает фазу угрозы в этом ходу"
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const descBox = document.getElementById('toolDescription');
+    document.querySelectorAll('.tool-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            const toolName = this.getAttribute('data-tool');
+            if (descBox && toolDescriptions[toolName]) {
+                descBox.classList.remove('empty');
+                descBox.innerHTML = '<div class="tool-desc-title">' + toolName + '</div>' + toolDescriptions[toolName];
+            }
+        });
+        item.addEventListener('mouseleave', function() {
+            if (descBox) {
+                descBox.classList.add('empty');
+                descBox.innerHTML = 'Наведите на предмет, чтобы увидеть его описание';
+            }
+        });
+    });
+});
+
+function showSwapModal() {
+    const modal = document.getElementById('swapModal');
+    const playerList = document.getElementById('playerList');
+    playerList.innerHTML = '';
+    document.querySelectorAll('.player-card').forEach((card, index) => {
+        const name = card.querySelector('.player-name span').textContent;
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.style.marginTop = '4px';
+        btn.textContent = name;
+        btn.onclick = () => { document.getElementById('swapTarget').value = index; closeSwapModal(); document.querySelector('form[action="/ability/swap"]').submit(); };
+        playerList.appendChild(btn);
+    });
+    modal.classList.add('active');
+}
+function closeSwapModal() { document.getElementById('swapModal').classList.remove('active'); }
+
+const log = document.querySelector('.log-container');
+if (log) log.scrollTop = log.scrollHeight;
+</script>
+</body>
+</html>

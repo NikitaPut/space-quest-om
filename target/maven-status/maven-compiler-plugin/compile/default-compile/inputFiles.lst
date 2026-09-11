@@ -1,0 +1,12 @@
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/model/VotingSituation.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/controller/GameController.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/repository/SituationRepository.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/service/GameEngine.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/model/Player.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/SpaceQuestApplication.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/model/CellType.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/entity/SituationEntity.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/model/PuzzleCard.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/model/Cell.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/model/GameSession.java
+/home/nikita/space-quest-om/src/main/java/com/spacequest/om/config/DatabaseInitializer.java

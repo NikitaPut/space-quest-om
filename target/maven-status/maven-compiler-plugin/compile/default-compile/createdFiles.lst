@@ -1,0 +1,12 @@
+com/spacequest/om/model/CellType.class
+com/spacequest/om/model/GameSession.class
+com/spacequest/om/controller/GameController.class
+com/spacequest/om/config/DatabaseInitializer.class
+com/spacequest/om/entity/SituationEntity.class
+com/spacequest/om/model/PuzzleCard.class
+com/spacequest/om/model/Cell.class
+com/spacequest/om/SpaceQuestApplication.class
+com/spacequest/om/repository/SituationRepository.class
+com/spacequest/om/model/Player.class
+com/spacequest/om/service/GameEngine.class
+com/spacequest/om/model/VotingSituation.class
