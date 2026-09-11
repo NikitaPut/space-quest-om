@@ -61,8 +61,6 @@
 
 ---
 
----
-
 ## 🛠️ Технологический стек
 
 - **Backend:** Java 17, Spring Boot 3.2.3, Spring Data JPA
@@ -86,6 +84,7 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/om_game
 spring.datasource.username=om_user
 spring.datasource.password=om_password
 spring.jpa.hibernate.ddl-auto=update
+```
 ### 3. Запуск приложения
 ```bash
 mvn clean spring-boot:run
