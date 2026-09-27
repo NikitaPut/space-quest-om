@@ -12,8 +12,18 @@ public class GameEngine {
     private final Random random = new Random();
 
     public GameEngine(SituationRepository situationRepo) { this.situationRepo = situationRepo; }
+    
     public GameSession getSession() { return session; }
-    public void startGame() { session.init(); }
+    
+    // Запуск с настройками по умолчанию
+    public void startGame() { 
+        session.init("electronics", 10); 
+    }
+    
+    // Запуск с пользовательскими настройками
+    public void startGameWithSettings(String topic, int playerCount) { 
+        session.init(topic, playerCount); 
+    }
 
     private void applyBurn(Player p) {
         if (p.x == -1) return;
@@ -181,7 +191,7 @@ public class GameEngine {
             }
         }
         session.votingHistory.add("📜 " + v.title + " → " + chosenOption);
-        session.gameLog += " | 🗳️ РЕШЕНИЕ: " + chosenOption + ". Последствия: " + consequence + " (Голосов: " + maxVotes + "/10)";
+        session.gameLog += " | ️ РЕШЕНИЕ: " + chosenOption + ". Последствия: " + consequence + " (Голосов: " + maxVotes + "/" + session.players.size() + ")";
         session.isVotingActive = false; session.currentVoting = null; session.votes.clear();
         checkEndings();
     }
@@ -239,7 +249,6 @@ public class GameEngine {
         else if (effect.equals("EVAC_LOSE") || effect.equals("LAST50")) { if (!random.nextBoolean()) session.gameLog = "💀 ПОРАЖЕНИЕ!"; }
         else if (effect.equals("SACRIFICE") || effect.equals("SACRIFICE_ALL") || effect.equals("ESCAPE_SACRIFICE")) { p.burns = 3; p.x = -1; p.y = -1; session.fixedNodes = 9; session.captainSacrifice = true; checkWinLoss(); }
         
-        // === ПРИШЕЛЬЦЫ ===
         else if (effect.equals("ALIEN_HELP")) { session.alienContact = true; session.gameLog += " | 👽 Контакт установлен!"; }
         else if (effect.equals("ALIEN_IGNORE")) { session.gameLog += " | 🤷 Проигнорировали."; }
         else if (effect.equals("ALIEN_ATTACK")) { session.pirateMode = true; giveTools(3); session.gameLog += " | 🏴‍☠️ Напали! +3 предмета."; }
@@ -256,13 +265,11 @@ public class GameEngine {
         else if (effect.equals("ALIEN_MERGE_ALIEN")) { session.aiMerged = true; session.gameLog += " | 🧬 Симбиоз с технологиями пришельцев!"; }
         else if (effect.equals("ALIEN_FIX")) { if (session.fixedNodes < 9) { session.fixedNodes++; session.gameLog += " | 🔧 Пришельцы помогли!"; } }
         
-        // === НОВАЯ ВЕТКА: МЕСТЬ ПРИШЕЛЬЦЕВ ===
         else if (effect.equals("ALIEN_SURRENDER")) { for (int i = 0; i < p.tools.size(); i++) p.tools.remove(0); session.gameLog += " | 🏳️ Сдались. Все предметы потеряны."; }
         else if (effect.equals("ALIEN_NEGOTIATE")) { if (random.nextInt(10) < 3) { session.alienFriendly = true; session.alienAngry = false; session.gameLog += " | 🤝 Удалось договориться!"; } else { for (int i = 0; i < 3; i++) spawnKZ(); for (Player pl : session.players) if (pl.x != -1) applyBurn(pl); session.gameLog += " | ❌ Переговоры провалились! Атака!"; } }
         else if (effect.equals("ALIEN_FIGHT")) { for (Player pl : session.players) if (pl.x != -1) applyBurn(pl); removeRandomKZ(3); session.gameLog += " | ⚔️ Сражаемся! Все получают ожоги, но -3 КЗ."; }
         else if (effect.equals("ALIEN_ESCAPE")) { session.escapePods = true; session.gameLog += " | 🚀 Спасаемся на шлюпках!"; }
 
-        // === АНОМАЛИЯ ===
         else if (effect.equals("ANOMALY_EXPLORE")) { session.anomalyExplored = true; int b = 0; for (Player pl : session.players) if (pl.x != -1 && b < 2) { applyBurn(pl); b++; } }
         else if (effect.equals("ANOMALY_DESTROY") || effect.equals("ANOMALY_CLOSE") || effect.equals("ANOMALY_DESTROY_PLANET")) { session.gameLog += " | 💥 Уничтожено."; }
         else if (effect.equals("ANOMALY_IGNORE")) { session.gameLog += " | 🤷 Игнорируем."; }
@@ -274,7 +281,6 @@ public class GameEngine {
         else if (effect.equals("ANOMALY_USE")) { giveTools(4); for (int i = 0; i < 3; i++) spawnKZ(); session.gameLog += " | ⚡ Использовали энергию. +3 КЗ!"; }
         else if (effect.equals("ANOMALY_FLEE")) { for (Player pl : session.players) if (pl.x != -1) pl.x = Math.max(0, pl.x - 2); session.gameLog += " | 🏃 Бежим! Все -2 клетки."; }
         
-        // === ИИ ===
         else if (effect.equals("AI_CHECK") || effect.equals("AI_BACKDOOR")) { session.backdoorActive = true; session.gameLog += " | 🔍 Найдена уязвимость!"; }
         else if (effect.equals("AI_IGNORE")) { session.gameLog += " | 🤷 Игнорируем."; }
         else if (effect.equals("AI_DISABLE")) { session.gameLog += " | 🔌 ИИ отключён."; }
@@ -291,7 +297,6 @@ public class GameEngine {
         else if (effect.equals("AI_REFUSE")) { session.gameLog += " | 🚫 Отказались."; }
         else if (effect.equals("AI_DESTROY")) { for (int i = 0; i < 3 && !p.tools.isEmpty(); i++) p.tools.remove(0); removeRandomKZ(999); session.gameLog += " | 💥 ИИ уничтожен. Все КЗ исчезли!"; }
         
-        // === ЗЕМЛЯ ===
         else if (effect.equals("EARTH_WAIT")) { session.earthContact = true; giveTools(5); }
         else if (effect.equals("EARTH_NOWAIT")) { session.gameLog += " | 🚫 Не ждём."; }
         else if (effect.equals("EARTH_REPLY")) { if (hasTool(p)) { consumeTool(p); session.earthContact = true; } }
@@ -304,7 +309,6 @@ public class GameEngine {
         else if (effect.equals("EARTH_STAY")) { session.gameLog += " | 🚀 Остаёмся."; }
         else if (effect.equals("EARTH_DATA")) { giveTools(5); }
         
-        // === ШЛЮПКИ ===
         else if (effect.equals("ESCAPE_ACTIVATE")) { session.escapePods = true; }
         else if (effect.equals("ESCAPE_CONTINUE")) { session.gameLog += " | 🔧 Продолжаем."; }
         else { session.gameLog += " | ⚙️ Эффект: " + effect; }
@@ -321,12 +325,30 @@ public class GameEngine {
 
     private void spawnKZ() { int x = random.nextInt(12), y = random.nextInt(12); session.board[x][y].hasKZ = true; session.kzCount++; }
 
+
     private void nextTurn() {
-        session.currentPlayerIndex = (session.currentPlayerIndex + 1) % 10;
+        if (session.players.isEmpty()) return;
+        int playerCount = session.players.size();
+        session.currentPlayerIndex = (session.currentPlayerIndex + 1) % playerCount;
         Player nextPlayer = session.players.get(session.currentPlayerIndex);
-        while (nextPlayer.x == -1 && nextPlayer.y == -1) { session.currentPlayerIndex = (session.currentPlayerIndex + 1) % 10; nextPlayer = session.players.get(session.currentPlayerIndex); }
-        if (nextPlayer.role.equals("Стажер") && !session.toolDeck.isEmpty()) { String tool = session.toolDeck.poll(); nextPlayer.tools.add(tool); session.gameLog += " | 🎁 " + nextPlayer.name + " (Стажер): " + tool; }
-        else { session.gameLog += " | Ход: " + nextPlayer.name; }
+        int safetyCounter = 0;
+        while (nextPlayer.x == -1 && nextPlayer.y == -1 && safetyCounter < playerCount) {
+            session.currentPlayerIndex = (session.currentPlayerIndex + 1) % playerCount;
+            nextPlayer = session.players.get(session.currentPlayerIndex);
+            safetyCounter++;
+        }
+        if (safetyCounter >= playerCount) {
+            session.gameLog = "💀 Все игроки погибли!";
+            checkEndings();
+            return;
+        }
+        if (nextPlayer.role.equals("Стажер") && !session.toolDeck.isEmpty()) {
+            String tool = session.toolDeck.poll();
+            nextPlayer.tools.add(tool);
+            session.gameLog += " | 🎁 " + nextPlayer.name + " (Стажер): " + tool;
+        } else {
+            session.gameLog += " | Ход: " + nextPlayer.name;
+        }
     }
 
     private void checkWinLoss() {
@@ -334,7 +356,6 @@ public class GameEngine {
         if (session.kzCount >= 7) session.gameLog = "💀 ПОРАЖЕНИЕ! Критическая масса КЗ.";
     }
 
-    // === ПРОВЕРКА КОНЦОВОК (12 штук!) ===
     public void checkEndings() {
         if (session.showEnding) return;
         int alivePlayers = countAlivePlayers();

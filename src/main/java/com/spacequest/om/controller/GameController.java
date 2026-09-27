@@ -15,8 +15,13 @@ public class GameController {
 
     @GetMapping("/")
     public String gamePage(Model model) {
+        // Если игра еще не началась, просто показываем экран выбора
+        if (!gameEngine.getSession().gameStarted) {
+            model.addAttribute("game", gameEngine.getSession());
+            return "game";
+        }
+        
         try {
-            if (gameEngine.getSession().players.isEmpty()) gameEngine.startGame();
             model.addAttribute("game", gameEngine.getSession());
             return "game";
         } catch (Exception e) {
@@ -24,6 +29,12 @@ public class GameController {
             model.addAttribute("error", e.getMessage());
             return "error";
         }
+    }
+
+    @PostMapping("/start-game")
+    public String startGame(@RequestParam String topic, @RequestParam(defaultValue = "10") int players) {
+        gameEngine.startGameWithSettings(topic, players);
+        return "redirect:/";
     }
 
     @PostMapping("/move")

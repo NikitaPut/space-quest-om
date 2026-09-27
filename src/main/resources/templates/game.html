@@ -112,6 +112,31 @@
 <div class="galaxy galaxy-2"></div>
 <div class="galaxy galaxy-3"></div>
 
+<!-- ЭКРАН ВЫБОРА НАСТРОЕК -->
+<div th:if="${!game.gameStarted}" class="modal active" style="z-index: 300;">
+    <div class="modal-content" style="width: 500px;">
+        <h2 style="color:#ff6b35; margin-bottom: 20px;">⚙️ НАСТРОЙКИ ИГРЫ</h2>
+        
+        <form action="/start-game" method="post">
+            <div style="margin-bottom: 20px; text-align: left;">
+                <label style="color: #a8d8ff; font-size: 14px; display: block; margin-bottom: 8px;">📚 Выберите тему вопросов:</label>
+                <select name="topic" style="width: 100%; padding: 12px; background: #1a2332; color: white; border: 2px solid #ff6b35; border-radius: 6px; font-size: 14px;">
+                    <option value="electronics">🔌 Электроника и Пайка</option>
+                    <option value="cpp">💻 C++ Синтаксис</option>
+                    <option value="python">🐍 Python Синтаксис</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 25px; text-align: left;">
+                <label style="color: #a8d8ff; font-size: 14px; display: block; margin-bottom: 8px;">👥 Количество игроков (1-10):</label>
+                <input type="number" name="players" min="1" max="10" value="10" style="width: 100%; padding: 12px; background: #1a2332; color: white; border: 2px solid #ff6b35; border-radius: 6px; font-size: 14px;">
+                <div style="color: #666; font-size: 11px; margin-top: 5px;">Если меньше 10 — каждый игрок управляет несколькими ролями.</div>
+            </div>
+            
+            <button type="submit" class="btn" style="font-size: 18px; padding: 15px; width: 100%;">🚀 НАЧАТЬ МИССИЮ</button>
+        </form>
+    </div>
+</div>
 <div class="header">🚀 ПРОЕКТ «ОМ» | КОСМИЧЕСКИЙ КВЕСТ</div>
 
 <div class="main-container">
@@ -127,7 +152,7 @@
             🛠️ <strong th:text="${game.toolDeck.size()}" style="color:#fff; font-size:16px;">12</strong> предметов
         </div>
         
-        <div class="active-actions" th:if="${game.players != null && !game.players.isEmpty()}">
+        <div class="active-actions" th:if="${game.gameStarted && game.players != null && !game.players.isEmpty()}">
             <div class="active-actions-header">🎯 Текущий ход</div>
             <div class="active-player-info" th:with="p=${game.players[game.currentPlayerIndex]}, idx=${game.currentPlayerIndex}">
                 <div class="player-token" th:style="'background-color: ' + ${p.color} + '; width:14px; height:14px; font-size:8px;'" th:text="${idx + 1}"></div>
@@ -197,10 +222,10 @@
     </div>
     
     <div class="center-column">
-        <div class="board-wrapper">
+        <div class="board-wrapper" th:if="${game.gameStarted}">
             <div class="board">
                 <div th:each="row : ${game.board}">
-                    <div th:each="cell : ${row}" th:class="${'cell ' + (cell.hasKZ ? 'kz' : (cell.type.name().toLowerCase()))}">
+                    <div th:each="cell : ${row}" th:class="${cell != null ? 'cell ' + (cell.hasKZ ? 'kz' : (cell.type.name().toLowerCase())) : 'cell corridor'}">
                         <span th:if="${cell.type.name() == 'CORE' && cell.playerColors.isEmpty()}" style="position:absolute; font-size:16px;">☢️</span>
                         <span th:if="${cell.type.name() == 'NODE' && cell.playerColors.isEmpty()}" style="position:absolute; font-size:16px;">⚡</span>
                         <div th:each="color, iterStat : ${cell.playerColors}" class="player-token" th:style="'background-color: ' + ${color} + '; color: ' + ${color} + ';'" th:text="${iterStat.index + 1}"></div>
@@ -248,10 +273,10 @@
                 </form>
             </div>
         </div>
-        <form action="/vote/finalize" method="post" th:if="${game.votes.size() >= 5}">
+        <form action="/vote/finalize" method="post" th:if="${game.votes.size() >= (game.players.size() + 1) / 2}">
             <button type="submit" class="btn btn-finalize">🗳️ ЗАВЕРШИТЬ ГОЛОСОВАНИЕ</button>
         </form>
-        <div th:if="${game.votes.size() < 5}" style="color: #666; font-size: 11px; margin-top: 10px;">Нужно минимум 5 голосов</div>
+        <div th:if="${game.votes.size() < 5}" style="color: #666; font-size: 11px; margin-top: 10px;">Нужно минимум <span th:text="${(game.players.size() + 1) / 2}">5</span> голосов (половина экипажа)</div>
     </div>
 </div>
 
