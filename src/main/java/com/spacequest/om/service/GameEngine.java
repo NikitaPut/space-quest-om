@@ -107,7 +107,9 @@ public class GameEngine {
     }
 
     public void submitPuzzleAnswer(String selectedAnswer) {
-        boolean correct = selectedAnswer.trim().equalsIgnoreCase(session.currentPuzzle.correctAnswer.trim());
+        boolean correct = session.currentPuzzle.isOpenEnded()
+                ? session.currentPuzzle.checkOpenAnswer(selectedAnswer)
+                : selectedAnswer.trim().equalsIgnoreCase(session.currentPuzzle.correctAnswer.trim());
         session.lastAnswer = selectedAnswer; session.lastAnswerCorrect = correct; session.lastExplanation = session.currentPuzzle.explanation;
         session.showResult = true; session.isPuzzleActive = false;
         if (correct) {

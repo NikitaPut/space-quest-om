@@ -311,10 +311,18 @@
         <h2 style="color:#ff6b35; font-size: 22px;">⚡ ГОЛОВОЛОМКА</h2>
         <p th:text="${game.currentPuzzle.question}" style="font-size:15px; margin:15px 0; color: white;"></p>
         <p style="color:#ff1a1a; font-size: 12px;">⏱️ <span th:text="${game.currentPuzzle.timeSeconds}"></span> сек</p>
-        <div style="margin-top: 12px;">
+        <div style="margin-top: 12px;" th:if="${game.currentPuzzle.answerOptions != null and !game.currentPuzzle.answerOptions.isEmpty()}">
             <form th:each="option : ${game.currentPuzzle.answerOptions}" action="/puzzle/submit" method="post">
                 <input type="hidden" name="answer" th:value="${option}">
                 <button type="submit" class="answer-btn"><span th:text="${option}">Вариант</span></button>
+            </form>
+        </div>
+        <div style="margin-top: 12px;" th:unless="${game.currentPuzzle.answerOptions != null and !game.currentPuzzle.answerOptions.isEmpty()}">
+            <p style="color:#a8d8ff; font-size: 12px; margin-bottom: 6px;">✍️ Введите ответ самостоятельно:</p>
+            <form action="/puzzle/submit" method="post" style="display:flex; gap:8px;">
+                <input type="text" name="answer" placeholder="Ваш ответ..." autocomplete="off" required
+                       style="flex:1; padding:10px; border-radius:6px; border:2px solid #a8d8ff; background:rgba(0,0,0,0.6); color:#fff; font-size:14px;">
+                <button type="submit" class="btn" style="width:auto; padding:10px 16px; margin:0;">Ответить</button>
             </form>
         </div>
     </div>
