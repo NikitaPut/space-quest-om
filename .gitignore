@@ -7,3 +7,4 @@
    mvnw.cmd
    # Скрываем файл с паролем от базы данных!
    src/main/resources/application.properties
+.idea/
