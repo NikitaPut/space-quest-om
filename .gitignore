@@ -1,10 +1,5 @@
-   target/
-   .idea/
-   *.iml
-   *.class
-   .mvn/
-   mvnw
-   mvnw.cmd
-   # Скрываем файл с паролем от базы данных!
-   src/main/resources/application.properties
-.idea/
+# Build artifacts (Maven)
+target/
+
+# Logs
+*.log

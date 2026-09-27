@@ -382,6 +382,23 @@ public class GameEngine {
     public void closeEnding() { session.showEnding = false; }
 
     public void rerollDice(int playerId) { Player p = session.players.get(playerId); if (p.role.equals("Главный Инженер") && !p.abilityUsed) { p.abilityUsed = true; session.gameLog = "🎲 " + p.name + " активировал переброс!"; } }
+
+    // === БРОСОК ДВУХ КУБИКОВ (веб-«костница») ===
+    public void rollDice(int playerId) {
+        if (!session.gameStarted) { session.gameLog = "⚠️ Сначала начните игру!"; return; }
+        if (playerId < 0 || playerId >= session.players.size()) playerId = session.currentPlayerIndex;
+        Player p = session.players.get(playerId);
+        if (p.x == -1) { session.gameLog = "💀 " + p.name + " погиб — ему нечем бросать кубики!"; return; }
+        session.dice1 = random.nextInt(6) + 1;
+        session.dice2 = random.nextInt(6) + 1;
+        session.diceSum = session.dice1 + session.dice2;
+        session.lastDiceRoller = p.name;
+        session.showDiceRoll = true;
+        session.gameLog = "🎲 " + p.name + " бросил кубики: " + session.dice1 + " + " + session.dice2 + " = " + session.diceSum + "!";
+    }
+
+    public void closeDiceRoll() { session.showDiceRoll = false; }
+
     public void autoSolveBinary(int playerId) {
         Player p = session.players.get(playerId);
         if (p.role.equals("Программист") && !p.abilityUsed && session.isPuzzleActive) {

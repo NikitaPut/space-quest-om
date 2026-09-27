@@ -66,6 +66,13 @@ public class GameSession {
     public String endingText = "";
     public String endingType = "";
 
+    // === БРОСОК ДВУХ КУБИКОВ ===
+    public boolean showDiceRoll = false;   // открыто ли окошко с анимацией броска
+    public int dice1 = 1;                  // результат первого кубика (1..6)
+    public int dice2 = 1;                  // результат второго кубика (1..6)
+    public int diceSum = 2;                // сумма выпавших очков
+    public String lastDiceRoller = "";     // кто бросал
+
     // Метод инициализации с параметрами
     public void init(String selectedTopic, int selectedPlayerCount) {
         this.topic = selectedTopic;
@@ -121,6 +128,8 @@ public class GameSession {
         analystChoosing = false;
         showToolHint = false;
         toolHint = null;
+        showDiceRoll = false;
+        dice1 = 1; dice2 = 1; diceSum = 2; lastDiceRoller = "";
         isVotingActive = false;
         currentVoting = null;
         votes.clear();

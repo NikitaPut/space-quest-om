@@ -54,6 +54,12 @@ public class GameController {
     
     @PostMapping("/ability/reroll")
     public String reroll(@RequestParam int playerId) { gameEngine.rerollDice(playerId); return "redirect:/"; }
+
+    @PostMapping("/dice/roll")
+    public String rollDice(@RequestParam(required = false, defaultValue = "-1") int playerId) { gameEngine.rollDice(playerId); return "redirect:/"; }
+    @PostMapping("/dice/close")
+    public String closeDiceRoll() { gameEngine.closeDiceRoll(); return "redirect:/"; }
+
     @PostMapping("/ability/autoSolve")
     public String autoSolve(@RequestParam int playerId) { gameEngine.autoSolveBinary(playerId); return "redirect:/"; }
     @PostMapping("/ability/removeKZ")
