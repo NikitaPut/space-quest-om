@@ -99,6 +99,31 @@
         .vote-option { background: linear-gradient(135deg, #2d3a52, #1a2332); border: 2px solid #448AFF; color: white; padding: 12px; margin: 8px 0; border-radius: 6px; text-align: left; }
         .voting-status { background: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 6px; margin: 15px 0; text-align: center; color: #69F0AE; font-size: 14px; }
         .btn-finalize { background: linear-gradient(135deg, #ff6b35, #ff8c5a); font-size: 16px; padding: 15px; margin-top: 10px; }
+
+        /* === ОКОШКО БРОСКА КУБИКОВ === */
+        .dice-modal .modal-content { border-color: #FFD740; box-shadow: 0 0 60px rgba(255, 215, 64, 0.5); }
+        .dice-stage { display: flex; justify-content: center; align-items: center; gap: 40px; margin: 25px 0; min-height: 110px; }
+        .die {
+            width: 96px; height: 96px; position: relative; border-radius: 16px;
+            background: linear-gradient(145deg, #f8f9fa, #ced4da);
+            box-shadow: inset 0 -6px 10px rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.6);
+        }
+        .die .pip { position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #1a2332; box-shadow: inset 0 2px 3px rgba(0,0,0,0.6); }
+        .pip.c  { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .pip.tl { top: 14px; left: 14px; }   .pip.br { bottom: 14px; right: 14px; }
+        .pip.tr { top: 14px; right: 14px; }  .pip.bl { bottom: 14px; left: 14px; }
+        .pip.ml { top: 50%; left: 14px; transform: translateY(-50%); }
+        .pip.mr { top: 50%; right: 14px; transform: translateY(-50%); }
+        .die.rolling { animation: diceRoll 0.4s linear infinite; }
+        @keyframes diceRoll {
+            0%   { transform: rotate(0deg)   translateY(0)    scale(1); }
+            25%  { transform: rotate(90deg)  translateY(-14px) scale(1.08); }
+            50%  { transform: rotate(180deg) translateY(0)    scale(0.95); }
+            75%  { transform: rotate(270deg) translateY(-14px) scale(1.08); }
+            100% { transform: rotate(360deg) translateY(0)    scale(1); }
+        }
+        .dice-sum { color: #FFD740; font-size: 26px; font-weight: bold; text-shadow: 0 0 15px rgba(255,215,64,0.7); min-height: 34px; }
+        .dice-btn { background: linear-gradient(135deg, #FFD740, #ffab00); color: #000; font-size: 16px; padding: 12px 30px; }
     </style>
 </head>
 <body>
@@ -174,6 +199,7 @@
             <div class="section-title">⚡ Действия</div>
             <form action="/puzzle/start" method="post"><button type="submit" class="btn">🔧 Починить узел</button></form>
             <form action="/tool/draw" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn" style="background: linear-gradient(135deg, #69F0AE, #00E676); color: #000;">📦 Взять предмет</button></form>
+            <form action="/dice/roll" method="post" style="margin-top:4px;"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn" style="background: linear-gradient(135deg, #FFD740, #ffab00); color:#000;">🎲 Бросить кубики</button></form>
             
             <div th:with="p=${game.players[game.currentPlayerIndex]}">
                 <div th:if="${p.role == 'Главный Инженер' && !p.abilityUsed}"><form action="/ability/reroll" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn btn-ability">🎲 Переброс</button></form></div>
@@ -285,10 +311,18 @@
         <h2 style="color:#ff6b35; font-size: 22px;">⚡ ГОЛОВОЛОМКА</h2>
         <p th:text="${game.currentPuzzle.question}" style="font-size:15px; margin:15px 0; color: white;"></p>
         <p style="color:#ff1a1a; font-size: 12px;">⏱️ <span th:text="${game.currentPuzzle.timeSeconds}"></span> сек</p>
-        <div style="margin-top: 12px;">
+        <div style="margin-top: 12px;" th:if="${game.currentPuzzle.answerOptions != null and !game.currentPuzzle.answerOptions.isEmpty()}">
             <form th:each="option : ${game.currentPuzzle.answerOptions}" action="/puzzle/submit" method="post">
                 <input type="hidden" name="answer" th:value="${option}">
                 <button type="submit" class="answer-btn"><span th:text="${option}">Вариант</span></button>
+            </form>
+        </div>
+        <div style="margin-top: 12px;" th:unless="${game.currentPuzzle.answerOptions != null and !game.currentPuzzle.answerOptions.isEmpty()}">
+            <p style="color:#a8d8ff; font-size: 12px; margin-bottom: 6px;">✍️ Введите ответ самостоятельно:</p>
+            <form action="/puzzle/submit" method="post" style="display:flex; gap:8px;">
+                <input type="text" name="answer" placeholder="Ваш ответ..." autocomplete="off" required
+                       style="flex:1; padding:10px; border-radius:6px; border:2px solid #a8d8ff; background:rgba(0,0,0,0.6); color:#fff; font-size:14px;">
+                <button type="submit" class="btn" style="width:auto; padding:10px 16px; margin:0;">Ответить</button>
             </form>
         </div>
     </div>
@@ -362,6 +396,70 @@
         <button onclick="closeSwapModal()" class="btn" style="background: linear-gradient(135deg, #555, #333);">Отмена</button>
     </div>
 </div>
+
+<!-- ОКОШКО БРОСКА ДВУХ КУБИКОВ -->
+<div th:if="${game.showDiceRoll}" id="diceModal" class="modal dice-modal active">
+    <div class="modal-content">
+        <h2 style="color:#FFD740;">🎲 БРОСОК КУБИКОВ</h2>
+        <p style="font-size:12px; color:#a8d8ff;" th:text="${game.lastDiceRoller} + ' бросает две кости...'"></p>
+        <div class="dice-stage">
+            <div class="die rolling" id="die1"></div>
+            <div class="die rolling" id="die2"></div>
+        </div>
+        <div class="dice-sum" id="diceSumResult">🎯 Сумма: ?</div>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
+            <form action="/dice/roll" method="post"><input type="hidden" name="playerId" th:value="${game.currentPlayerIndex}"><button type="submit" class="btn dice-btn">🎲 Бросить ещё раз</button></form>
+            <form action="/dice/close" method="post"><button type="submit" class="btn" style="background: linear-gradient(135deg, #555, #333);">✔️ Закрыть</button></form>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+/* ==== АНИМАЦИЯ БРОСКА КУБИКОВ ==== */
+const finalDice1 = /*[[${game.dice1}]]*/ 1;
+const finalDice2 = /*[[${game.dice2}]]*/ 1;
+
+const pipSets = {
+    1: ['c'],
+    2: ['tl', 'br'],
+    3: ['tl', 'c', 'br'],
+    4: ['tl', 'tr', 'bl', 'br'],
+    5: ['tl', 'tr', 'c', 'bl', 'br'],
+    6: ['tl', 'tr', 'ml', 'mr', 'bl', 'br']
+};
+
+function renderDie(el, value) {
+    el.innerHTML = '';
+    (pipSets[value] || []).forEach(pos => {
+        const pip = document.createElement('span');
+        pip.className = 'pip ' + pos;
+        el.appendChild(pip);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const die1 = document.getElementById('die1');
+    const die2 = document.getElementById('die2');
+    if (!die1 || !die2) return;
+    const sumBox = document.getElementById('diceSumResult');
+    let ticks = 0;
+    const maxTicks = 16; // ~1.2 секунды анимации
+    const spinner = setInterval(() => {
+        renderDie(die1, 1 + Math.floor(Math.random() * 6));
+        renderDie(die2, 1 + Math.floor(Math.random() * 6));
+        ticks++;
+        if (ticks >= maxTicks) {
+            clearInterval(spinner);
+            die1.classList.remove('rolling');
+            die2.classList.remove('rolling');
+            renderDie(die1, finalDice1);
+            renderDie(die2, finalDice2);
+            sumBox.textContent = '🎯 ' + finalDice1 + ' + ' + finalDice2 + ' = ' + (finalDice1 + finalDice2);
+        }
+    }, 75);
+});
+</script>
+
 
 <script>
 const toolDescriptions = {

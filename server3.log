@@ -1,0 +1,45 @@
+nohup: ignoring input
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2026-09-27T12:54:32.718Z  INFO 3771 --- [           main] c.spacequest.om.SpaceQuestApplication    : Starting SpaceQuestApplication using Java 17.0.20 with PID 3771 (/workspace/target/classes started by root in /workspace)
+2026-09-27T12:54:32.721Z  INFO 3771 --- [           main] c.spacequest.om.SpaceQuestApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-09-27T12:54:34.617Z  INFO 3771 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-27T12:54:34.788Z  INFO 3771 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 163 ms. Found 1 JPA repository interface.
+2026-09-27T12:54:36.023Z  INFO 3771 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8099 (http)
+2026-09-27T12:54:36.086Z  INFO 3771 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-27T12:54:36.086Z  INFO 3771 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-09-27T12:54:36.191Z  INFO 3771 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-27T12:54:36.193Z  INFO 3771 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3306 ms
+2026-09-27T12:54:36.514Z  INFO 3771 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-27T12:54:36.615Z  INFO 3771 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-27T12:54:36.696Z  INFO 3771 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-27T12:54:37.117Z  INFO 3771 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-27T12:54:37.192Z  INFO 3771 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-27T12:54:37.622Z  INFO 3771 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-27T12:54:37.674Z  INFO 3771 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-27T12:54:39.604Z  INFO 3771 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-27T12:54:39.721Z  INFO 3771 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-27T12:54:40.619Z  WARN 3771 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-27T12:54:41.692Z  INFO 3771 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8099 (http) with context path ''
+2026-09-27T12:54:41.724Z  INFO 3771 --- [           main] c.spacequest.om.SpaceQuestApplication    : Started SpaceQuestApplication in 9.819 seconds (process running for 10.418)
+=================================================================
+📚 ЗАПОЛНЕНИЕ БД ДЛИННЫМИ СЮЖЕТНЫМИ ЛИНИЯМИ...
+✅ УСПЕШНО ЗАПОЛНЕНО: 28 ситуаций!
+=================================================================
+2026-09-27T12:54:47.303Z  INFO 3771 --- [nio-8099-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-27T12:54:47.303Z  INFO 3771 --- [nio-8099-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-27T12:54:47.309Z  INFO 3771 --- [nio-8099-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2026-09-27T12:54:48.297Z  WARN 3771 --- [nio-8099-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+2026-09-27T12:54:48.476Z  WARN 3771 --- [nio-8099-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+2026-09-27T12:54:48.502Z  WARN 3771 --- [nio-8099-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+2026-09-27T12:55:05.855Z  WARN 3771 --- [nio-8099-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+2026-09-27T12:55:22.723Z  INFO 3771 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-27T12:55:22.727Z  INFO 3771 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-09-27T12:55:22.732Z  INFO 3771 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

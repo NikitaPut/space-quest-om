@@ -1,7 +1,7 @@
 com/spacequest/om/model/CellType.class
 com/spacequest/om/model/GameSession.class
-com/spacequest/om/controller/GameController.class
 com/spacequest/om/config/DatabaseInitializer.class
+com/spacequest/om/controller/GameController.class
 com/spacequest/om/entity/SituationEntity.class
 com/spacequest/om/model/PuzzleCard.class
 com/spacequest/om/model/Cell.class

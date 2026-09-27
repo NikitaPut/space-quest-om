@@ -1,0 +1,38 @@
+nohup: ignoring input
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2026-09-27T12:55:27.111Z  INFO 4043 --- [           main] c.spacequest.om.SpaceQuestApplication    : Starting SpaceQuestApplication using Java 17.0.20 with PID 4043 (/workspace/target/classes started by root in /workspace)
+2026-09-27T12:55:27.113Z  INFO 4043 --- [           main] c.spacequest.om.SpaceQuestApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-09-27T12:55:29.119Z  INFO 4043 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-27T12:55:29.221Z  INFO 4043 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42 ms. Found 1 JPA repository interface.
+2026-09-27T12:55:30.678Z  INFO 4043 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8099 (http)
+2026-09-27T12:55:30.692Z  INFO 4043 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-27T12:55:30.692Z  INFO 4043 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-09-27T12:55:30.793Z  INFO 4043 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-27T12:55:30.794Z  INFO 4043 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3514 ms
+2026-09-27T12:55:31.187Z  INFO 4043 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-27T12:55:31.284Z  INFO 4043 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-27T12:55:31.317Z  INFO 4043 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-27T12:55:31.785Z  INFO 4043 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-27T12:55:31.814Z  INFO 4043 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-27T12:55:32.384Z  INFO 4043 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-27T12:55:32.386Z  INFO 4043 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-27T12:55:34.604Z  INFO 4043 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-27T12:55:34.707Z  INFO 4043 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-27T12:55:35.713Z  WARN 4043 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-27T12:55:36.624Z  INFO 4043 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8099 (http) with context path ''
+2026-09-27T12:55:36.683Z  INFO 4043 --- [           main] c.spacequest.om.SpaceQuestApplication    : Started SpaceQuestApplication in 10.381 seconds (process running for 10.964)
+=================================================================
+📚 ЗАПОЛНЕНИЕ БД ДЛИННЫМИ СЮЖЕТНЫМИ ЛИНИЯМИ...
+✅ УСПЕШНО ЗАПОЛНЕНО: 28 ситуаций!
+=================================================================
+2026-09-27T13:03:25.183Z  INFO 4043 --- [nio-8099-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-27T13:03:25.184Z  INFO 4043 --- [nio-8099-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-27T13:03:25.185Z  INFO 4043 --- [nio-8099-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

@@ -1,10 +1,2 @@
-   target/
-   .idea/
-   *.iml
-   *.class
-   .mvn/
-   mvnw
-   mvnw.cmd
-   # Скрываем файл с паролем от базы данных!
-   src/main/resources/application.properties
-.idea/
+# Compiled and build artifacts
+target/
